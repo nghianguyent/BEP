@@ -13,5 +13,12 @@
         </head>
         <body>
                 <h1>Welcome To Freshetables</h1>
+                <div></div>
+                <form class="login_form" action="Login" method="GET">
+                    <label>Username: </label>
+                    <input name="username" type="text" id="username">
+                    <label>password: </label>
+                    <input name="password" type="password" id="password">
+                </form>
         </body>
 </html>
