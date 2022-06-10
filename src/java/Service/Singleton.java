@@ -21,9 +21,11 @@ public class Singleton {
     private static Connection getConnection(String host, String username, String password) {
         try {
             Connection conn = DriverManager.getConnection(host + "username = " + username + ";password=" + password);
+            return conn;
         } catch (Exception e){
             System.out.println(e.getMessage());
         }
+        return null;
     }
 
     public static Connection getInstance() {
@@ -43,20 +45,20 @@ public class Singleton {
         }
     }
 
-    public static void main(String[] args) {
-        try {
-//            Class.forName("com.microsoft.sqlserver.jdbc.Driver");
-            Connection conn = DriverManager.getConnection("jdbc:sqlserver://member-card.database.windows.net;databaseName=project_backend;user=fcode_member_card;password=F-code.tech");
-            String sql = "SELECT * FROM [User]";
-            PreparedStatement stm = conn.prepareStatement(sql);
-            ResultSet rs = stm.executeQuery();
-
-            while (rs.next()) {
-                System.out.println(rs.getString("id") + " " + rs.getString("name"));
-            }
-
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-    }
+//    public static void main(String[] args) {
+//        try {
+////            Class.forName("com.microsoft.sqlserver.jdbc.Driver");
+//            Connection conn = DriverManager.getConnection("jdbc:sqlserver://member-card.database.windows.net;databaseName=project_backend;user=fcode_member_card;password=F-code.tech");
+//            String sql = "SELECT * FROM [User]";
+//            PreparedStatement stm = conn.prepareStatement(sql);
+//            ResultSet rs = stm.executeQuery();
+//
+//            while (rs.next()) {
+//                System.out.println(rs.getString("id") + " " + rs.getString("name"));
+//            }
+//
+//        } catch (Exception e) {
+//            System.out.println(e);
+//        }
+//    }
 }
