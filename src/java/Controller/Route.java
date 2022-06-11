@@ -38,11 +38,9 @@ public class Route extends HttpServlet {
             RequestDispatcher home = req.getRequestDispatcher("./HomePage/Home.jsp");
             Cookie[] cookies = req.getCookies();
             if (cookies != null && isLogedIn(cookies)) {
-                System.out.println("Home route");
                 home.forward(req, resp);
                 return;
             }
-            System.out.println("route");
 
             login.include(req, resp);
 

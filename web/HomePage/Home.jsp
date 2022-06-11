@@ -13,6 +13,5 @@
     </head>
     <body>
         <h1>Hello <%= session.getAttribute("username") %> </h1>
-
     </body>
 </html>
