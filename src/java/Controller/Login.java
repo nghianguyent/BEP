@@ -21,39 +21,21 @@ import javax.servlet.http.HttpSession;
  *
  * @author tram nguyen
  */
-@WebServlet(name = "Login", urlPatterns = {"/"})
+@WebServlet(name = "Login", urlPatterns = {"/Login"})
 public class Login extends HttpServlet {
-
-    private boolean isLogedIn(Cookie[] cookies) {
-        return cookies.length > 1;
-    }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-    }
-
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setContentType("text/html");
         try (PrintWriter out = resp.getWriter()) {
             RequestDispatcher home = req.getRequestDispatcher("/HomePage/Home.jsp");
+            RequestDispatcher route = req.getRequestDispatcher("/Route");
+            RequestDispatcher loginFail = req.getRequestDispatcher("/Login/Loginfail.jsp");
 
             String username = req.getParameter("username");
             String password = req.getParameter("password");
 
             User user = new User(username, password);
-
-            // check if the user login before 
-            Cookie[] cookies = req.getCookies();
-            if (isLogedIn(cookies)) {
-                home.forward(req, resp);
-                return;
-            }
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().compareTo("sessionId") == 1) {
-
-                }
-            }
 
             // Check user 
             if (user.isExistedAccount()) {
@@ -61,18 +43,22 @@ public class Login extends HttpServlet {
                 cookie.setMaxAge(-1);
                 cookie.setPath("/");
                 cookie.setHttpOnly(true);
-                HttpSession session = req.getSession();
-                System.out.println(session.getId());
                 resp.addCookie(cookie);
-                resp.sendRedirect("/HomePage/Home.jsp");
+                HttpSession session = req.getSession();
+                session.setAttribute("username", username);
+                home.forward(req, resp);
+                return;
             }
-//             home.forward(req, resp);
-//            if (isLogedIn(cookies)) {
-//                home.forward(req, resp);
-//                return;
-//            }
+            
+            loginFail.forward(req, resp);
         } catch (Exception e) {
+            System.out.println(e);
         }
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
     }
 
 }

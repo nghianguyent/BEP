@@ -1,10 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Controller;
 
+import Beans.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
@@ -14,12 +10,13 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author tram nguyen
  */
-@WebServlet(name = "Home")
+@WebServlet(name = "Home", urlPatterns = {"/Home"})
 public class Home extends HttpServlet {
 
     /**
@@ -35,14 +32,24 @@ public class Home extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+            RequestDispatcher home = request.getRequestDispatcher("/HomePage/Home.jsp");
             Cookie[] cookies = request.getCookies();
-            
-            System.out.println("Called home");
-            if (cookies.length <= 1) {
-                response.sendRedirect("/");
+            if (cookies != null || cookies.length <= 1) {
+                response.sendRedirect("/Login");
+                return;
+            }
+
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().compareTo("username") == 0) {
+                    request.setAttribute("username", cookie.getValue());
+                    home.forward(request, response);
+//                    out.print("<h2> Hello" + cookie.getValue() + " </h2>");
+                }
             }
             /* TODO output your page here. You may use following sample code. */
 
+        } catch (Exception e) {
+            System.out.println(e);
         }
     }
 

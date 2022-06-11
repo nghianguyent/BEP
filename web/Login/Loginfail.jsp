@@ -1,6 +1,6 @@
 <%-- 
-    Document   : Home
-    Created on : 10-06-2022, 21:37:42
+    Document   : Loginfail
+    Created on : 11-06-2022, 08:47:41
     Author     : tram nguyen
 --%>
 
@@ -12,7 +12,7 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Hello <%= session.getAttribute("username") %> </h1>
-
+        <h2 style="color: red" > Login fail</h2>
+        <%@include file="../Login.jsp" %>
     </body>
 </html>

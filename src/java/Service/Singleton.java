@@ -20,10 +20,11 @@ public class Singleton {
 
     private static Connection getConnection(String host, String username, String password) {
         try {
-            Connection conn = DriverManager.getConnection(host + "username = " + username + ";password=" + password);
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            Connection conn = DriverManager.getConnection(host + "user=" + username + ";password=" + password);
             return conn;
         } catch (Exception e){
-            System.out.println(e.getMessage());
+            System.out.println(e);
         }
         return null;
     }
