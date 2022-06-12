@@ -28,17 +28,15 @@ public class Login extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html");
         try (PrintWriter out = resp.getWriter()) {
-            RequestDispatcher home = req.getRequestDispatcher("/HomePage/Home.jsp");
-            RequestDispatcher route = req.getRequestDispatcher("/Route");
             RequestDispatcher loginFail = req.getRequestDispatcher("/Login/Loginfail.jsp");
 
             String username = req.getParameter("username");
             String password = req.getParameter("password");
-
+            System.out.println("login");
             User userAccount = new User(username, password);
             DTO.User userInfor;
             // Check user 
-            if (userAccount.getUser() !=  null) {
+            if (userAccount.getUser() != null) {
                 userInfor = userAccount.getUser();
                 System.out.println(userInfor);
                 Cookie userCookie = new Cookie("username", userInfor.getUsername());
@@ -53,10 +51,10 @@ public class Login extends HttpServlet {
                 resp.addCookie(roleCookie);
                 HttpSession session = req.getSession();
                 session.setAttribute("username", username);
-                home.forward(req, resp);
+                resp.sendRedirect("/Home");
                 return;
             }
-            
+
             loginFail.forward(req, resp);
         } catch (Exception e) {
             System.out.println(e);
@@ -65,8 +63,16 @@ public class Login extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+        System.out.println("Login");
+        Cookie[] cookies = request.getCookies();
+        if (Route.isLogedIn(cookies) == 0) {
+            response.sendRedirect("/");
+            return;
+        }
+
+        response.sendRedirect("/Home");
     }
 
 }

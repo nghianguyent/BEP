@@ -64,4 +64,18 @@ public class User {
         }
         return null;
     }
+
+    public DTO.User getByUserName() throws Exception {
+        Connection conn = Singleton.getInstance();
+        String sql = Queries.selectUser;
+        PreparedStatement stm = conn.prepareStatement(sql);
+        ResultSet rs = stm.executeQuery();
+        while (rs.next()) {
+            if (rs.getString("username").trim().equals(username)) {
+                DTO.User user = new DTO.User(rs.getString("id"), rs.getString("name"), rs.getString("username"), rs.getString("address"), rs.getString("phone"), rs.getString("role"));
+                return user;
+            }
+        }
+        return null;
+    }
 }

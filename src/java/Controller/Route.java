@@ -19,10 +19,13 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author tram nguyen
  */
-@WebServlet(name = "route", urlPatterns = {"/"})
+@WebServlet(name = "route", urlPatterns = {"/", "/Route"})
 public class Route extends HttpServlet {
 
     public static int isLogedIn(Cookie[] cookies) {
+        if (cookies == null) {
+            return 0;
+        }
         for (Cookie cookie : cookies) {
             if (cookie.getName().compareTo("role") == 0) {
                 if (cookie.getValue().compareTo("user") == 0) {
@@ -39,20 +42,13 @@ public class Route extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try (PrintWriter out = resp.getWriter()) {
             RequestDispatcher login = req.getRequestDispatcher("./Login.jsp");
-            RequestDispatcher home = req.getRequestDispatcher("./HomePage/Home.jsp");
-            RequestDispatcher adminPage = req.getRequestDispatcher("./HomePage/adminPage.jsp");
 
             Cookie[] cookies = req.getCookies();
-            if (cookies != null) {
-                if (isLogedIn(cookies) == 1) {
-                    home.forward(req, resp);
-                    return;
-                } else {
-                    adminPage.forward(req, resp);
-                    return;
-                }
+            
+            if (isLogedIn(cookies) > 0) {
+                resp.sendRedirect("/Home");
+                return;
             }
-
             login.include(req, resp);
 
         } catch (Exception e) {

@@ -1,6 +1,5 @@
 package Controller;
 
-import Beans.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
@@ -10,7 +9,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -30,23 +28,7 @@ public class Home extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            RequestDispatcher home = request.getRequestDispatcher("/HomePage/Home.jsp");
-            RequestDispatcher adminPage = request.getRequestDispatcher("/HomePage/AdminPage.jsp");
 
-            Cookie[] cookies = request.getCookies();
-            if (cookies != null || cookies.length <= 1) {
-                response.sendRedirect("/Login");
-                return;
-            }
-
-
-            /* TODO output your page here. You may use following sample code. */
-
-        } catch (Exception e) {
-            System.out.println(e);
-        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -61,7 +43,29 @@ public class Home extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            RequestDispatcher home = request.getRequestDispatcher("/HomePage/Home.jsp");
+            RequestDispatcher adminPage = request.getRequestDispatcher("/HomePage/AdminPage.jsp");
+
+            System.out.println("Home");
+            Cookie[] cookies = request.getCookies();
+            if (Route.isLogedIn(cookies) == 0) {
+                response.sendRedirect("/");
+                return;
+            }
+
+           
+            if (Route.isLogedIn(cookies) == 1) {
+                home.forward(request, response);
+            } else {
+                adminPage.forward(request, response);
+            }
+
+            /* TODO output your page here. You may use following sample code. */
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
     /**
@@ -85,7 +89,7 @@ public class Home extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Short description";
+        return "home page";
     }// </editor-fold>
 
 }
