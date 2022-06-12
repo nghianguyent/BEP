@@ -16,19 +16,23 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- *  
+ *
  * @author tram nguyen
  */
 @WebServlet(name = "route", urlPatterns = {"/"})
 public class Route extends HttpServlet {
 
-    private boolean isLogedIn(Cookie[] cookies) {
+    public static int isLogedIn(Cookie[] cookies) {
         for (Cookie cookie : cookies) {
-            if (cookie.getName().compareTo("username") == 0) {
-                return true;
+            if (cookie.getName().compareTo("role") == 0) {
+                if (cookie.getValue().compareTo("user") == 0) {
+                    return 1;
+                } else {
+                    return 2;
+                }
             }
         }
-        return false;
+        return 0;
     }
 
     @Override
@@ -36,10 +40,17 @@ public class Route extends HttpServlet {
         try (PrintWriter out = resp.getWriter()) {
             RequestDispatcher login = req.getRequestDispatcher("./Login.jsp");
             RequestDispatcher home = req.getRequestDispatcher("./HomePage/Home.jsp");
+            RequestDispatcher adminPage = req.getRequestDispatcher("./HomePage/adminPage.jsp");
+
             Cookie[] cookies = req.getCookies();
-            if (cookies != null && isLogedIn(cookies)) {
-                home.forward(req, resp);
-                return;
+            if (cookies != null) {
+                if (isLogedIn(cookies) == 1) {
+                    home.forward(req, resp);
+                    return;
+                } else {
+                    adminPage.forward(req, resp);
+                    return;
+                }
             }
 
             login.include(req, resp);

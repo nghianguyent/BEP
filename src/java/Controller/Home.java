@@ -33,19 +33,15 @@ public class Home extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             RequestDispatcher home = request.getRequestDispatcher("/HomePage/Home.jsp");
+            RequestDispatcher adminPage = request.getRequestDispatcher("/HomePage/AdminPage.jsp");
+
             Cookie[] cookies = request.getCookies();
             if (cookies != null || cookies.length <= 1) {
                 response.sendRedirect("/Login");
                 return;
             }
 
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().compareTo("username") == 0) {
-                    request.setAttribute("username", cookie.getValue());
-                    home.forward(request, response);
-//                    out.print("<h2> Hello" + cookie.getValue() + " </h2>");
-                }
-            }
+
             /* TODO output your page here. You may use following sample code. */
 
         } catch (Exception e) {

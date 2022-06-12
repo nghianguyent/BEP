@@ -19,6 +19,15 @@ public class User {
 
     private String username;
     private String password;
+    private String role;
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 
     public User(String username, String password) {
         this.username = username;
@@ -39,26 +48,20 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" + "username=" + username + ", password=" + password + '}';
+        return "User{" + "username=" + username + ", password=" + password + ",role=" + role + '}';
     }
 
-    public boolean isExistedAccount() {
-
-        try {
-            Connection conn = Singleton.getInstance();
-            String sql = Queries.selectUser;
-            PreparedStatement stm = conn.prepareStatement(sql);
-            ResultSet rs = stm.executeQuery();
-            while (rs.next()) {
-                if (rs.getString("username").trim().equals(username) && rs.getString("password").trim().equals(password)) {
-                    return true;
-                }
+    public DTO.User getUser() throws Exception {
+        Connection conn = Singleton.getInstance();
+        String sql = Queries.selectUser;
+        PreparedStatement stm = conn.prepareStatement(sql);
+        ResultSet rs = stm.executeQuery();
+        while (rs.next()) {
+            if (rs.getString("username").trim().equals(username) && rs.getString("password").trim().equals(password)) {
+                DTO.User user = new DTO.User(rs.getString("id"), rs.getString("name"), rs.getString("username"), rs.getString("address"), rs.getString("phone"), rs.getString("role"));
+                return user;
             }
-
-            return false;
-        } catch (Exception e) {
-            System.out.println(e);
-            return false;
         }
+        return null;
     }
 }

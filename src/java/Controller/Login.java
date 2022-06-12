@@ -35,15 +35,22 @@ public class Login extends HttpServlet {
             String username = req.getParameter("username");
             String password = req.getParameter("password");
 
-            User user = new User(username, password);
-
+            User userAccount = new User(username, password);
+            DTO.User userInfor;
             // Check user 
-            if (user.isExistedAccount()) {
-                Cookie cookie = new Cookie("username", username);
-                cookie.setMaxAge(-1);
-                cookie.setPath("/");
-                cookie.setHttpOnly(true);
-                resp.addCookie(cookie);
+            if (userAccount.getUser() !=  null) {
+                userInfor = userAccount.getUser();
+                System.out.println(userInfor);
+                Cookie userCookie = new Cookie("username", userInfor.getUsername());
+                userCookie.setMaxAge(-1);
+                userCookie.setPath("/");
+                userCookie.setHttpOnly(true);
+                Cookie roleCookie = new Cookie("role", userInfor.getRole());
+                roleCookie.setMaxAge(-1);
+                roleCookie.setPath("/");
+                roleCookie.setHttpOnly(true);
+                resp.addCookie(userCookie);
+                resp.addCookie(roleCookie);
                 HttpSession session = req.getSession();
                 session.setAttribute("username", username);
                 home.forward(req, resp);
@@ -53,6 +60,7 @@ public class Login extends HttpServlet {
             loginFail.forward(req, resp);
         } catch (Exception e) {
             System.out.println(e);
+            resp.sendError(500, "Database connection fail");
         }
     }
 

@@ -20,8 +20,8 @@ public class Singleton {
 
     private static Connection getConnection(String host, String username, String password) {
         try {
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            Connection conn = DriverManager.getConnection(host + "user=" + username + ";password=" + password);
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(host, username, password);
             return conn;
         } catch (Exception e){
             System.out.println(e);
@@ -30,9 +30,9 @@ public class Singleton {
     }
 
     public static Connection getInstance() {
-        String host = "jdbc:sqlserver://member-card.database.windows.net;databaseName=project_backend;";
-        String username = "fcode_member_card";
-        String password = "F-code.tech";
+        String host = "jdbc:mysql://localhost:3307/project_backend";
+        String username = "root";
+        String password = "nghia14302";
 
         try {
             if (conn == null) {

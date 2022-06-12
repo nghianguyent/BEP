@@ -11,5 +11,5 @@ package Utils;
  */
 public class Queries {
 
-    public static String selectUser  = "SELECT * FROM [User]";
+    public static String selectUser  = "SELECT * FROM user";
 }
