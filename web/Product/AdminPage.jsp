@@ -12,10 +12,6 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <div class="card">
-            <div class="card-img-top">
-                <img src="https://caythuocdangian.com/dua-leo/ "  alt="dưa leo">
-            </div>
-        </div>
+    
     </body>
 </html>

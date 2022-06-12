@@ -4,8 +4,19 @@
     Author     : tram nguyen
 --%>
 
-<div class="container">
-    <div class="row p-5">
+<div class="container mw-100 p-4" id="productContainer">
+    <div class="row row-cols-5 g-4 ">
+        <jsp:include page="./ProductCard.jsp"></jsp:include>
+        <jsp:include page="./ProductCard.jsp"></jsp:include>
+        <jsp:include page="./ProductCard.jsp"></jsp:include>
+        <jsp:include page="./ProductCard.jsp"></jsp:include>
+        <jsp:include page="./ProductCard.jsp"></jsp:include>
+        <jsp:include page="./ProductCard.jsp"></jsp:include>
+        <jsp:include page="./ProductCard.jsp"></jsp:include>
+        <jsp:include page="./ProductCard.jsp"></jsp:include>
+        <jsp:include page="./ProductCard.jsp"></jsp:include>
+        <jsp:include page="./ProductCard.jsp"></jsp:include>
+        <jsp:include page="./ProductCard.jsp"></jsp:include>
         <jsp:include page="./ProductCard.jsp"></jsp:include>
     </div>
 
