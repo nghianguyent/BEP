@@ -80,7 +80,7 @@ public class Product {
         return "ProductList{" + "id=" + id + ", name=" + name + ", description=" + description + ", volumn=" + volumn + ", price=" + price + '}';
     }
 
-    public static DTO.ProductList getAllProducts() throws Exception{
+    public static DTO.ProductList getAllProducts() throws Exception {
         Connection conn = Singleton.getInstance();
         String sql = Queries.getAllProduct;
         PreparedStatement stm = conn.prepareStatement(sql);
@@ -95,6 +95,25 @@ public class Product {
             product.setDescription(rs.getNString("description"));
             product.setImgLink(rs.getString("img_link"));
             result.add(product);
+        }
+        return result;
+    }
+
+    public static DTO.Product getAllProductsByid(String id) throws Exception {
+        Connection conn = Singleton.getInstance();
+        String sql = Queries.getAllProduct + "WHERE id= ?";
+        PreparedStatement stm = conn.prepareStatement(sql);
+        stm.setString(1, id);
+        ResultSet rs = stm.executeQuery();
+        DTO.Product result = new DTO.Product();
+        while (rs.next()) {
+            DTO.Product product = new DTO.Product();
+            product.setId(rs.getString("id"));
+            product.setName(rs.getString("name"));
+            product.setPrice(rs.getDouble("price"));
+            product.setVolumn(rs.getInt("volumn"));
+            product.setDescription(rs.getNString("description"));
+            product.setImgLink(rs.getString("img_link"));
         }
         return result;
     }
