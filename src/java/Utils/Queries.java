@@ -12,4 +12,5 @@ package Utils;
 public class Queries {
 
     public static String selectUser  = "SELECT * FROM user";
+    public static String getAllProduct = "SELECT * FROM product";
 }

@@ -1,5 +1,6 @@
 package Controller;
 
+import DTO.Product;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
@@ -9,6 +10,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -16,20 +18,6 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "Home", urlPatterns = {"/Home"})
 public class Home extends HttpServlet {
-
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -47,15 +35,22 @@ public class Home extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             RequestDispatcher home = request.getRequestDispatcher("/HomePage/Home.jsp");
             RequestDispatcher adminPage = request.getRequestDispatcher("/HomePage/AdminPage.jsp");
-
+            RequestDispatcher cart = request.getRequestDispatcher("/Cart");
             System.out.println("Home");
             Cookie[] cookies = request.getCookies();
             if (Route.isLogedIn(cookies) == 0) {
                 response.sendRedirect("/");
                 return;
             }
-
-           
+            // load product to request
+            DTO.ProductList list = DAO.Product.getAllProducts();
+            for (Product product : list) {
+                System.out.println(product);
+            }
+            request.setAttribute("productList", list);
+            HttpSession session = request.getSession();
+            session.setAttribute("productList", list);
+//            cart.include(request, response);
             if (Route.isLogedIn(cookies) == 1) {
                 home.forward(request, response);
             } else {
@@ -64,7 +59,7 @@ public class Home extends HttpServlet {
 
             /* TODO output your page here. You may use following sample code. */
         } catch (Exception e) {
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
     }
 
@@ -79,7 +74,7 @@ public class Home extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        
     }
 
     /**
