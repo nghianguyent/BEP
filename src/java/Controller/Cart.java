@@ -22,6 +22,31 @@ import javax.servlet.http.HttpSession;
 @WebServlet(name = "Cart", urlPatterns = {"/Cart"})
 public class Cart extends HttpServlet {
 
+    protected void minusProductVolumn(DTO.Product product, int volumn) throws Exception {
+        if (volumn > product.getVolumn()) {
+            throw new Exception("The volumn is more than the remaining");
+        }
+        product.setVolumn(product.getVolumn() - volumn);
+        DAO.Product.updateProduct(product.getId(), product.getVolumn());
+    }
+
+    protected void updateCart(String userId, String productId, int volumn, DTO.CartList carts) throws Exception {
+        DTO.Product product = DAO.Product.getAllProductsByid(productId);
+        minusProductVolumn(product, volumn);
+        if (carts.size() == 0) {
+            DAO.Cart.createCart(userId, product, volumn);
+            System.out.println("success");
+        }
+        for (DTO.Cart cart : carts) {
+            if (cart.getProductId().compareTo(productId) == 0 && cart.getUserId().compareTo(userId) == 0) {
+                volumn += cart.getVolumn();
+                cart.setVolumn(volumn);
+                DAO.Cart.updateCart(userId, productId, volumn);
+                System.out.println("success");
+            }
+        }
+    }
+
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         super.doDelete(req, resp); //To change body of generated methods, choose Tools | Templates.
@@ -34,36 +59,31 @@ public class Cart extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        try {
-            RequestDispatcher home = req.getRequestDispatcher("/HomePage/Home");
 
+        HttpSession session = req.getSession();
+        try {
             Cookie[] cookies = req.getCookies();
             String userId = "";
-            String producId = req.getParameter("productId");
+            String productId = req.getParameter("productId");
             int volumn = Integer.parseInt(req.getParameter("volumn"));
+
             for (Cookie cookie : cookies) {
                 if (cookie.getName().compareTo("userId") == 0) {
                     userId = cookie.getValue();
                 }
             }
             // check if the product is added to cart
-            DTO.CartList carts = DAO.Cart.getCart(userId, producId);
-            for (DTO.Cart cart : carts) {
-                if (cart.getProductId().compareTo(producId) == 0 && cart.getUserId().compareTo(userId) == 0) {
-                    volumn += cart.getVolumn();
-                    cart.setVolumn(volumn);
-                    DAO.Cart.updateCart(userId, producId, volumn);
-                }
-            }
-            HttpSession session = req.getSession();
-            req.setAttribute("message", "Added to cart");
-            req.setAttribute("addedProduct", producId);
-            session.setAttribute("message", "Added to cart");
-            session.setAttribute("addedProduct", producId);
+            DTO.CartList carts = DAO.Cart.getCart(userId, productId);
+            System.out.println(carts);
+            updateCart(userId, productId, volumn, carts);
+            // send the message
+            session.setAttribute("message", "success");
             resp.sendRedirect("/Home");
 
         } catch (Exception e) {
             System.out.println(e);
+            session.setAttribute("message", "Fail: " + e.getMessage());
+            resp.sendRedirect("/Home");
         }
     }
 

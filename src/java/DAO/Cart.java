@@ -18,7 +18,6 @@ import java.sql.ResultSet;
 public class Cart {
 
     public static boolean updateCart(String userId, String productId, int volumn) throws Exception {
-        DTO.Cart cart = new DTO.Cart();
         Connection conn = Singleton.getInstance();
         String sql = Queries.updateProductCartVolumn;
         PreparedStatement stm = conn.prepareStatement(sql);
@@ -32,10 +31,10 @@ public class Cart {
     public static boolean createCart(String userId, DTO.Product product, int volumn) throws Exception {
         DTO.Cart cart = new DTO.Cart();
         Connection conn = Singleton.getInstance();
-        String sql = Queries.updateProductCartVolumn;
+        String sql = Queries.createCart;
         PreparedStatement stm = conn.prepareStatement(sql);
-        stm.setInt(1, volumn);
-        stm.setString(2, userId);
+        stm.setString(1, userId);
+        stm.setString(2, product.getId());
         stm.setString(3, userId + product.getId());
         stm.setInt(4, volumn);
         stm.setDouble(5, (double)volumn * product.getPrice());

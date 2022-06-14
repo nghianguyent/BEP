@@ -9,15 +9,23 @@
     pageContext.setAttribute("list", request.getAttribute("productList"));
 %>
 <div class="container mw-100" id="productContainer">
-        <%
-            String message = (String) session.getAttribute("message");
-            if (message != null) {
-        %>
-        <jsp:include page="./Component/SuccessAdded.jsp"></jsp:include>
-        <%
-                session.setAttribute("message", null);
+    <%
+        String message = (String) session.getAttribute("message");
+        if (message != null) {
+            if (message.compareTo("success") == 0) {
+
+    %>
+    <jsp:include page="./Component/SuccessAdded.jsp"></jsp:include>
+    <%            }
+        if (message.contains("Fail".subSequence(0, 4))) {
+    %>
+    <jsp:include page="./Component/FailAdded.jsp"></jsp:include>
+    <%
             }
-        %>
+            session.setAttribute("message", null);
+        }
+
+    %>
     <div class="row p-4 row-cols-2 row-cols-md-3  row-cols-lg-4 row-cols-xl-5 g-4 ">
         <jsp:include page="Component/ProductCard.jsp"></jsp:include>
     </div>

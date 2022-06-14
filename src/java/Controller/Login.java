@@ -38,7 +38,6 @@ public class Login extends HttpServlet {
             // Check user 
             if (userAccount.getUser() != null) {
                 userInfor = userAccount.getUser();
-                System.out.println(userInfor);
                 Cookie userCookie = new Cookie("username", userInfor.getUsername());
                 userCookie.setMaxAge(-1);
                 userCookie.setPath("/");
@@ -47,8 +46,13 @@ public class Login extends HttpServlet {
                 roleCookie.setMaxAge(-1);
                 roleCookie.setPath("/");
                 roleCookie.setHttpOnly(true);
+                Cookie userIdCookie = new Cookie("userId", userInfor.getId());
+                userIdCookie.setMaxAge(-1);
+                userIdCookie.setPath("/");
+                userIdCookie.setHttpOnly(true);
                 resp.addCookie(userCookie);
                 resp.addCookie(roleCookie);
+                resp.addCookie(userIdCookie);
                 HttpSession session = req.getSession();
                 session.setAttribute("username", username);
                 resp.sendRedirect("/Home");

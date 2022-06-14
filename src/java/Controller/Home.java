@@ -44,9 +44,6 @@ public class Home extends HttpServlet {
             }
             // load product to request
             DTO.ProductList list = DAO.Product.getAllProducts();
-            for (Product product : list) {
-                System.out.println(product);
-            }
             request.setAttribute("productList", list);
             HttpSession session = request.getSession();
             session.setAttribute("productList", list);

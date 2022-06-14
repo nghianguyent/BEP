@@ -10,6 +10,7 @@ package DTO;
  * @author tram nguyen
  */
 public class Cart {
+
     private String userId;
     private String productId;
     private int volumn;
@@ -56,5 +57,9 @@ public class Cart {
     private double price;
     private String bill_code;
 
-    
+    @Override
+    public String toString() {
+        return "Cart{" + "userId=" + userId + ", productId=" + productId + ", volumn=" + volumn + ", price=" + price + ", bill_code=" + bill_code + '}';
+    }
+
 }

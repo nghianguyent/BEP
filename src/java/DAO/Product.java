@@ -18,6 +18,8 @@ import java.sql.ResultSet;
  */
 public class Product {
 
+    private static Connection conn = Singleton.getInstance();
+
     private String id;
     private String name;
     private String description;
@@ -81,7 +83,6 @@ public class Product {
     }
 
     public static DTO.ProductList getAllProducts() throws Exception {
-        Connection conn = Singleton.getInstance();
         String sql = Queries.getAllProduct;
         PreparedStatement stm = conn.prepareStatement(sql);
         ResultSet rs = stm.executeQuery();
@@ -100,22 +101,29 @@ public class Product {
     }
 
     public static DTO.Product getAllProductsByid(String id) throws Exception {
-        Connection conn = Singleton.getInstance();
-        String sql = Queries.getAllProduct + "WHERE id= ?";
+        String sql = Queries.getAllProduct + " WHERE id = ?";
         PreparedStatement stm = conn.prepareStatement(sql);
         stm.setString(1, id);
         ResultSet rs = stm.executeQuery();
         DTO.Product result = new DTO.Product();
         while (rs.next()) {
-            DTO.Product product = new DTO.Product();
-            product.setId(rs.getString("id"));
-            product.setName(rs.getString("name"));
-            product.setPrice(rs.getDouble("price"));
-            product.setVolumn(rs.getInt("volumn"));
-            product.setDescription(rs.getNString("description"));
-            product.setImgLink(rs.getString("img_link"));
+            result.setId(rs.getString("id"));
+            result.setName(rs.getString("name"));
+            result.setPrice(rs.getDouble("price"));
+            result.setVolumn(rs.getInt("volumn"));
+            result.setDescription(rs.getNString("description"));
+            result.setImgLink(rs.getString("img_link"));
+            break;
         }
         return result;
     }
 
+    public static boolean updateProduct(String id, int volumn) throws Exception {
+        String sql = Queries.updateProductVolumn;
+        PreparedStatement stm = conn.prepareStatement(sql);
+        stm.setInt(1, volumn);
+        stm.setString(2, id);
+        stm.executeUpdate();
+        return true;
+    }
 }
