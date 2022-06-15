@@ -100,7 +100,7 @@ public class Product {
         return result;
     }
 
-    public static DTO.Product getAllProductsByid(String id) throws Exception {
+    public static DTO.Product getProductByid(String id) throws Exception {
         String sql = Queries.getAllProduct + " WHERE id = ?";
         PreparedStatement stm = conn.prepareStatement(sql);
         stm.setString(1, id);
@@ -113,7 +113,6 @@ public class Product {
             result.setVolumn(rs.getInt("volumn"));
             result.setDescription(rs.getNString("description"));
             result.setImgLink(rs.getString("img_link"));
-            break;
         }
         return result;
     }

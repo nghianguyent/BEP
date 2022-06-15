@@ -45,12 +45,12 @@ public class Route extends HttpServlet {
 
             Cookie[] cookies = req.getCookies();
             
-            if (isLogedIn(cookies) > 0) {
+            if (isLogedIn(cookies) != 0) {
                 resp.sendRedirect("/Home");
                 return;
             }
             login.include(req, resp);
-
+            
         } catch (Exception e) {
             System.out.println(e);
         }

@@ -1,5 +1,6 @@
 package Controller;
 
+import DAO.User;
 import java.io.IOException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -37,9 +38,9 @@ public class Cart extends HttpServlet {
     }
 
     protected void updateCart(String userId, String productId, int volumn, DTO.CartList carts) throws Exception {
-        DTO.Product product = DAO.Product.getAllProductsByid(productId);
+        DTO.Product product = DAO.Product.getProductByid(productId);;
         checkNoVolumn(volumn);
-        if (carts.size() == 0) {
+        if (DAO.Cart.getCart(userId, productId) == null) {
             checkMaxVolumn(product, volumn);
             DAO.Cart.createCart(userId, product, volumn);
             System.out.println("success");
@@ -49,7 +50,7 @@ public class Cart extends HttpServlet {
                 volumn += cart.getVolumn();
                 checkMaxVolumn(product, volumn);
                 cart.setVolumn(volumn);
-                DAO.Cart.updateCart(userId, productId, volumn);
+                DAO.Cart.updateCart(userId, product, volumn);
                 System.out.println("success");
             }
         }
@@ -81,8 +82,7 @@ public class Cart extends HttpServlet {
                 }
             }
             // check if the product is added to cart
-            DTO.CartList carts = DAO.Cart.getCart(userId, productId);
-            System.out.println(carts);
+            DTO.CartList carts = DAO.Cart.getAllCarts(userId);
             updateCart(userId, productId, volumn, carts);
             // send the message
             session.setAttribute("message", "success");
@@ -97,7 +97,17 @@ public class Cart extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        try {
+            DAO.User user = new User();
+            Cookie[] cookies = req.getCookies();
+            if (Route.isLogedIn(cookies) == 0) {
+                resp.sendRedirect("/");
+            }
+            user.getIdFromCookies(cookies);
 
+//            DTO.CartList carts = DAO.Cart.getCart(userId, productId);
+        } catch (Exception e) {
+        }
     }
 
 }

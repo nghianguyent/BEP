@@ -19,26 +19,21 @@ public class DBExecuter {
 
     private static Connection conn;
     private static PreparedStatement statement;
-    private static ResultSet resultSet;
 
-    public static Vector<String> executeDb(String type, String query, String... params) throws Exception{
+    public static ResultSet executeDb(String type, String query, String... params) throws Exception {
         conn = Singleton.getInstance();
-        Vector<String> result = new Vector<String>();
+        ResultSet result;
 
-            statement = conn.prepareStatement(query);
-            for (int i = 0; i < params.length; i++) {
-                statement.setString(i + 1, params[i]);
-            }
-            if (type.equals("update")) {
-                statement.executeUpdate();
-                return null;
-            } else {
-                resultSet = statement.executeQuery();
-
-                while (resultSet.next()) {
-                    result.add(resultSet.getString(1));
-                }
-            }
+        statement = conn.prepareStatement(query);
+        for (int i = 0; i < params.length; i++) {
+            statement.setString(i + 1, params[i]);
+        }
+        if (type.equals("update")) {
+            statement.executeUpdate();
+            return null;        
+        } else {
+            result = statement.executeQuery();
+        }
         return result;
     }
 }

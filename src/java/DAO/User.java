@@ -10,6 +10,7 @@ import Utils.Queries;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import javax.servlet.http.Cookie;
 
 /**
  *
@@ -20,6 +21,14 @@ public class User {
     private String username;
     private String password;
     private String role;
+    private String id;
+
+    public User() {
+    }
+
+    public String getId() {
+        return id;
+    }
 
     public String getRole() {
         return role;
@@ -77,5 +86,15 @@ public class User {
             }
         }
         return null;
+    }
+
+    public void getIdFromCookies(Cookie[] cookies) {
+
+        for (Cookie cookie : cookies) {
+            if (cookie.getName().compareTo("userId") == 0) {
+                this.id = cookie.getValue();
+                return;
+            }
+        }
     }
 }

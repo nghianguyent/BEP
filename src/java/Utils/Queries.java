@@ -10,11 +10,13 @@ package Utils;
  * @author tram nguyen
  */
 public class Queries {
+    
     public static String updateProductVolumn = "UPDATE product SET volumn = ? WHERE id = ?";
     public static String selectUser = "SELECT * FROM user";
     public static String getAllProduct = "SELECT * FROM product";
+    public static String getAllCarts = "SELECT * FROM cart WHERE user_id = ?";
     public static String getCart = "SELECT * FROM cart WHERE user_id = ? AND product_id = ?";
-    public static String updateProductCartVolumn = "UPDATE cart SET volumn = ? WHERE user_id = ? AND product_id = ? ";
+    public static String updateProductCartVolumn = "UPDATE cart SET volumn = ?, price = ? WHERE user_id = ? AND product_id = ? ";
     public static String createCart = "INSERT INTO cart VALUES (?,?,?,?,?)";    
     public static String deleteCart = "DELETE FROM cart WHERE user_id = ? AND product_id = ?";
 }

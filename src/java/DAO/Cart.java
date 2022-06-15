@@ -5,6 +5,7 @@
  */
 package DAO;
 
+import DTO.CartList;
 import Service.Singleton;
 import Utils.Queries;
 import java.sql.Connection;
@@ -18,13 +19,15 @@ import java.util.Vector;
  */
 public class Cart {
 
-    public static boolean updateCart(String userId, String productId, int volumn) throws Exception {
+    public static boolean updateCart(String userId, DTO.Product product, int volumn) throws Exception {
         Connection conn = Singleton.getInstance();
         String sql = Queries.updateProductCartVolumn;
         PreparedStatement stm = conn.prepareStatement(sql);
+        double price = ((double) volumn * product.getPrice());
         stm.setInt(1, volumn);
-        stm.setString(2, userId);
-        stm.setString(3, productId);
+        stm.setDouble(2, price);
+        stm.setString(3, userId);
+        stm.setString(4, product.getId());
         stm.executeUpdate();
         return true;
     }
@@ -32,31 +35,46 @@ public class Cart {
     public static boolean deleteCard(String userId, String productId) throws Exception {
         String sql = Queries.deleteCart;
         DBExecuter.executeDb("update", sql, userId, productId);
-        return truel;
+        return true;
     }
 
     public static boolean createCart(String userId, DTO.Product product, int volumn) throws Exception {
-        DTO.Cart cart = new DTO.Cart();
         Connection conn = Singleton.getInstance();
         String sql = Queries.createCart;
         PreparedStatement stm = conn.prepareStatement(sql);
+        double price = ((double) volumn * product.getPrice());
         stm.setString(1, userId);
         stm.setString(2, product.getId());
         stm.setString(3, userId + product.getId());
         stm.setInt(4, volumn);
-        stm.setDouble(5, (double) volumn * product.getPrice());
+        stm.setDouble(5, price);
         stm.executeUpdate();
         return true;
     }
 
-    public static DTO.CartList getCart(String userId, String productId) throws Exception {
-        DTO.CartList result = new DTO.CartList();
+    public static DTO.Cart getCart(String userId, String productId) throws Exception {
         Connection conn = Singleton.getInstance();
         String sql = Queries.getCart;
+        DTO.Cart cart = null;
         PreparedStatement stm = conn.prepareStatement(sql);
         stm.setString(1, userId);
         stm.setString(2, productId);
         ResultSet rs = stm.executeQuery();
+        while (rs.next()) {
+            cart = new  DTO.Cart();
+            cart.setUserId(rs.getString("user_id"));
+            cart.setProductId(rs.getString("product_id"));
+            cart.setPrice(rs.getDouble("price"));
+            cart.setVolumn(rs.getInt("volumn"));
+            cart.setBill_code(rs.getString("bill_code"));
+        }
+        return cart;
+    }
+
+    public static DTO.CartList getAllCarts(String userId) throws Exception {
+
+        ResultSet rs = DBExecuter.executeDb("query", Queries.getAllCarts, userId);
+        DTO.CartList result = new CartList();
         while (rs.next()) {
             DTO.Cart cart = new DTO.Cart();
             cart.setUserId(rs.getString("user_id"));
