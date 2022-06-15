@@ -17,8 +17,27 @@
     </head>
     <body>
         <jsp:include  page="/Component/Navbar.jsp"></jsp:include>
-            <div class="row p-4 gap-4"> 
+
+        <%
+            String message = (String) session.getAttribute("message");
+            if (message != null) {
+                if (message.compareTo("success") == 0) {
+
+        %>
+        <jsp:include page="/Component/SuccessAdded.jsp"></jsp:include>
+        <%            }
+            if (message.contains("Fail".subSequence(0, 4))) {
+        %>
+        <jsp:include page="/Component/FailAdded.jsp"></jsp:include>
+        <%
+                }
+                session.setAttribute("message", null);
+            }
+
+        %>
+        <div class="row p-4 gap-4"> 
             <jsp:include page="./Component/CartItem.jsp"></jsp:include>
         </div>
+
     </body>
 </html>

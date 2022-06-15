@@ -70,7 +70,7 @@ public class Cart extends HttpServlet {
             String userId = "";
             String productId = req.getParameter("productId");
             int volumn = Integer.parseInt(req.getParameter("volumn"));
-
+            System.out.println("Cart update");
             for (Cookie cookie : cookies) {
                 if (cookie.getName().compareTo("userId") == 0) {
                     userId = cookie.getValue();
@@ -78,28 +78,31 @@ public class Cart extends HttpServlet {
             }
             // check if the product is added to cart
             DTO.CartList carts = DAO.Cart.getAllCarts(userId);
+            for (DTO.Cart cart: carts) {
+                if (cart.getProductId().compareTo(productId) == 0) {
+                    volumn -= cart.getVolumn();
+                }
+            }
             updateCart(userId, productId, volumn, carts);
             // send the message
             session.setAttribute("message", "success");
-            resp.sendRedirect("/Cart");
+//            resp.sendRedirect("/Cart");
 
         } catch (Exception e) {
             System.out.println(e);
             session.setAttribute("message", "Fail: " + e.getMessage());
-            resp.sendRedirect("/Cart");
+//            resp.sendRedirect("/Cart");
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
         HttpSession session = req.getSession();
         try {
             Cookie[] cookies = req.getCookies();
             String userId = "";
             String productId = req.getParameter("productId");
             int volumn = Integer.parseInt(req.getParameter("volumn"));
-
             for (Cookie cookie : cookies) {
                 if (cookie.getName().compareTo("userId") == 0) {
                     userId = cookie.getValue();
@@ -124,6 +127,10 @@ public class Cart extends HttpServlet {
         try {
             RequestDispatcher cartPage = req.getRequestDispatcher("/Product/Cart.jsp");
             DAO.User user = new User();
+            String method = req.getParameter("method");
+            if (method != null && method.compareTo("PUT") == 0) {
+                doPut(req, resp);
+            }
             Cookie[] cookies = req.getCookies();
             if (Route.isLogedIn(cookies) == 0) {
                 resp.sendRedirect("/");
