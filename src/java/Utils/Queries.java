@@ -16,4 +16,5 @@ public class Queries {
     public static String getCart = "SELECT * FROM cart WHERE user_id = ? AND product_id = ?";
     public static String updateProductCartVolumn = "UPDATE cart SET volumn = ? WHERE user_id = ? AND product_id = ? ";
     public static String createCart = "INSERT INTO cart VALUES (?,?,?,?,?)";    
+    public static String deleteCart = "DELETE FROM cart WHERE user_id = ? AND product_id = ?";
 }

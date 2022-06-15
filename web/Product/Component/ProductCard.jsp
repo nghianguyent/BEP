@@ -5,7 +5,21 @@
 --%>
 <%
     DTO.ProductList list = (DTO.ProductList) request.getAttribute("productList");
-  
+    
+   // check if the list has no card, display to notify         
+    if (list.size() == 0) {
+%>
+<div class="col">
+    <div class="card">
+        <div class="card-body">
+            <p class="text-primary">There are no product yet</p>
+        </div>
+    </div>
+</div>
+<%
+        return;
+    }
+    // render card list to view
     for (DTO.Product product : list) {
 %>
 <div class="col">

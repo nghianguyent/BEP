@@ -10,6 +10,7 @@ import Utils.Queries;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Vector;
 
 /**
  *
@@ -28,6 +29,12 @@ public class Cart {
         return true;
     }
 
+    public static boolean deleteCard(String userId, String productId) throws Exception {
+        String sql = Queries.deleteCart;
+        DBExecuter.executeDb("update", sql, userId, productId);
+        return truel;
+    }
+
     public static boolean createCart(String userId, DTO.Product product, int volumn) throws Exception {
         DTO.Cart cart = new DTO.Cart();
         Connection conn = Singleton.getInstance();
@@ -37,7 +44,7 @@ public class Cart {
         stm.setString(2, product.getId());
         stm.setString(3, userId + product.getId());
         stm.setInt(4, volumn);
-        stm.setDouble(5, (double)volumn * product.getPrice());
+        stm.setDouble(5, (double) volumn * product.getPrice());
         stm.executeUpdate();
         return true;
     }

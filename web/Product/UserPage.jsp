@@ -5,9 +5,6 @@
 --%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%
-    pageContext.setAttribute("list", request.getAttribute("productList"));
-%>
 <div class="container mw-100" id="productContainer">
     <%
         String message = (String) session.getAttribute("message");
