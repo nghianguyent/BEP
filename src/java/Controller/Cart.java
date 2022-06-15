@@ -22,24 +22,32 @@ import javax.servlet.http.HttpSession;
 @WebServlet(name = "Cart", urlPatterns = {"/Cart"})
 public class Cart extends HttpServlet {
 
-    protected void minusProductVolumn(DTO.Product product, int volumn) throws Exception {
+    protected void checkMaxVolumn(DTO.Product product, int volumn) throws Exception {
         if (volumn > product.getVolumn()) {
             throw new Exception("The volumn is more than the remaining");
         }
-        product.setVolumn(product.getVolumn() - volumn);
-        DAO.Product.updateProduct(product.getId(), product.getVolumn());
+        //        product.setVolumn(product.getVolumn() - volumn);
+//        DAO.Product.updateProduct(product.getId(), product.getVolumn());
+    }
+
+    protected void checkNoVolumn(int volumn) throws Exception {
+        if (volumn == 0) {
+            throw new Exception("Volumn is equal zero");
+        }
     }
 
     protected void updateCart(String userId, String productId, int volumn, DTO.CartList carts) throws Exception {
         DTO.Product product = DAO.Product.getAllProductsByid(productId);
-        minusProductVolumn(product, volumn);
+        checkNoVolumn(volumn);
         if (carts.size() == 0) {
+            checkMaxVolumn(product, volumn);
             DAO.Cart.createCart(userId, product, volumn);
             System.out.println("success");
         }
         for (DTO.Cart cart : carts) {
             if (cart.getProductId().compareTo(productId) == 0 && cart.getUserId().compareTo(userId) == 0) {
                 volumn += cart.getVolumn();
+                checkMaxVolumn(product, volumn);
                 cart.setVolumn(volumn);
                 DAO.Cart.updateCart(userId, productId, volumn);
                 System.out.println("success");
@@ -49,7 +57,7 @@ public class Cart extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doDelete(req, resp); //To change body of generated methods, choose Tools | Templates.
+
     }
 
     @Override
