@@ -98,13 +98,17 @@ public class Cart extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
+            RequestDispatcher cartPage = req.getRequestDispatcher("/Product/Cart.jsp");
             DAO.User user = new User();
             Cookie[] cookies = req.getCookies();
             if (Route.isLogedIn(cookies) == 0) {
                 resp.sendRedirect("/");
             }
             user.getIdFromCookies(cookies);
-
+            DTO.CartList carts = DAO.Cart.getAllCarts(user.getId());
+            
+            req.setAttribute("carts", carts);
+            cartPage.forward(req, resp);
 //            DTO.CartList carts = DAO.Cart.getCart(userId, productId);
         } catch (Exception e) {
         }

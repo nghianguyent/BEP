@@ -1,6 +1,6 @@
 <%-- 
-    Document   : Home
-    Created on : 10-06-2022, 21:37:42
+    Document   : Cart
+    Created on : 15-06-2022, 17:43:29
     Author     : tram nguyen
 --%>
 
@@ -17,6 +17,6 @@
     </head>
     <body>
         <jsp:include  page="/Component/Navbar.jsp"></jsp:include>
-        <jsp:include page="/Product/UserPage.jsp"></jsp:include>
+        <h2>Hello Cart</h2>
     </body>
 </html>
