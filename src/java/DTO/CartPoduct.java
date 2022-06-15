@@ -9,12 +9,25 @@ package DTO;
  *
  * @author tram nguyen
  */
-public class Cart {
+public class CartPoduct {
 
     private String userId;
     private String productId;
-    private int volumn;
+    private int  volumn;
+    private double price;
+    private String billCode;
+    private String productName;
+    private String productImgLink;
+    public CartPoduct() {
+    }
 
+    public String getBillCode() {
+        return billCode;
+    }
+
+    public void setBillCode(String billCode) {
+        this.billCode = billCode;
+    }
     public String getUserId() {
         return userId;
     }
@@ -47,19 +60,25 @@ public class Cart {
         this.price = price;
     }
 
-    public String getBill_code() {
-        return bill_code;
+    public String getProductName() {
+        return productName;
     }
 
-    public void setBillCode(String bill_code) {
-        this.bill_code = bill_code;
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
-    private double price;
-    private String bill_code;
+
+    public String getProductImgLink() {
+        return productImgLink;
+    }
+
+    public void setProductImgLink(String productImgLink) {
+        this.productImgLink = productImgLink;
+    }
 
     @Override
     public String toString() {
-        return "Cart{" + "userId=" + userId + ", productId=" + productId + ", volumn=" + volumn + ", price=" + price + ", bill_code=" + bill_code + '}';
+        return "CartPoduct{" + "userId=" + userId + ", productId=" + productId + ", volumn=" + volumn + ", price=" + price + ", productName=" + productName + ", productImgLink=" + productImgLink + '}';
     }
 
 }

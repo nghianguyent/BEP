@@ -66,7 +66,7 @@ public class Cart {
             cart.setProductId(rs.getString("product_id"));
             cart.setPrice(rs.getDouble("price"));
             cart.setVolumn(rs.getInt("volumn"));
-            cart.setBill_code(rs.getString("bill_code"));
+            cart.setBillCode(rs.getString("bill_code"));
         }
         return cart;
     }
@@ -81,7 +81,7 @@ public class Cart {
             cart.setProductId(rs.getString("product_id"));
             cart.setPrice(rs.getDouble("price"));
             cart.setVolumn(rs.getInt("volumn"));
-            cart.setBill_code(rs.getString("bill_code"));
+            cart.setBillCode(rs.getString("bill_code"));
             result.add(cart);
         }
         return result;

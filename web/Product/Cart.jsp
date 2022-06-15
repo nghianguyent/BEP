@@ -17,6 +17,8 @@
     </head>
     <body>
         <jsp:include  page="/Component/Navbar.jsp"></jsp:include>
-        <h2>Hello Cart</h2>
+            <div class="row p-4 gap-4"> 
+            <jsp:include page="./Component/CartItem.jsp"></jsp:include>
+        </div>
     </body>
 </html>

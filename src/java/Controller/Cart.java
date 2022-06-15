@@ -1,5 +1,6 @@
 package Controller;
 
+import DAO.CardProduct;
 import DAO.User;
 import java.io.IOException;
 import javax.servlet.RequestDispatcher;
@@ -63,7 +64,30 @@ public class Cart extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPut(req, resp); //To change body of generated methods, choose Tools | Templates.
+        HttpSession session = req.getSession();
+        try {
+            Cookie[] cookies = req.getCookies();
+            String userId = "";
+            String productId = req.getParameter("productId");
+            int volumn = Integer.parseInt(req.getParameter("volumn"));
+
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().compareTo("userId") == 0) {
+                    userId = cookie.getValue();
+                }
+            }
+            // check if the product is added to cart
+            DTO.CartList carts = DAO.Cart.getAllCarts(userId);
+            updateCart(userId, productId, volumn, carts);
+            // send the message
+            session.setAttribute("message", "success");
+            resp.sendRedirect("/Cart");
+
+        } catch (Exception e) {
+            System.out.println(e);
+            session.setAttribute("message", "Fail: " + e.getMessage());
+            resp.sendRedirect("/Cart");
+        }
     }
 
     @Override
@@ -105,11 +129,11 @@ public class Cart extends HttpServlet {
                 resp.sendRedirect("/");
             }
             user.getIdFromCookies(cookies);
-            DTO.CartList carts = DAO.Cart.getAllCarts(user.getId());
-            
+            DAO.CardProduct userCart = new CardProduct(user.getId());
+            DTO.CartProductList carts = userCart.getAllProductCart();
             req.setAttribute("carts", carts);
             cartPage.forward(req, resp);
-//            DTO.CartList carts = DAO.Cart.getCart(userId, productId);
+
         } catch (Exception e) {
         }
     }
