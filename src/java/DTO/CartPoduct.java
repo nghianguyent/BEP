@@ -18,6 +18,16 @@ public class CartPoduct {
     private String billCode;
     private String productName;
     private String productImgLink;
+    private int remainVolumn;
+
+    public int getRemainVolumn() {
+        return remainVolumn;
+    }
+
+    public void setRemainVolumn(int remainVolumn) {
+        this.remainVolumn = remainVolumn;
+    }
+    
     public CartPoduct() {
     }
 

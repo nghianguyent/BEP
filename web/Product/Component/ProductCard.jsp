@@ -30,7 +30,7 @@
                 <%= product.getName()%>
                 <%--<c:out value="${product}" />--%>
             </h5>
-            <h6 class="card-text text-primary">Price: <span><%= (int)product.getPrice()%> ?</span></h6>
+            <h6 class="card-text text-primary">Price: <span><%= (int)product.getPrice()%> VND / Unit</span></h6>
             <h6 class="card-text text-primary">Remaining: <span><%= product.getVolumn()%></span>   <span>Unit</span></h6>
             <p class="card-text"> <%= product.getDescription()%> </p>
             <form class="row gap-2 p-2"  action="Cart" method="POST">

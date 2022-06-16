@@ -21,7 +21,7 @@
         <%
             String message = (String) session.getAttribute("message");
             if (message != null) {
-                if (message.compareTo("success") == 0) {
+                if (message.contains("Success".subSequence(0, 7))) {
 
         %>
         <jsp:include page="/Component/SuccessAdded.jsp"></jsp:include>
@@ -36,6 +36,10 @@
 
         %>
         <div class="row p-4 gap-4"> 
+            <form action="Cart" method="POST" class="container col-8  gap-2 pr-2 h-50"  >
+                <input class="d-none" id="checkout" name="method" value="DELETE">
+                <input class="btn btn-primary float-end col-6 col-md-5 col-lg-3 col-xl-2" id="liveToastBtn" type="submit" value="Checkout">
+            </form>
             <jsp:include page="./Component/CartItem.jsp"></jsp:include>
         </div>
 

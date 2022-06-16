@@ -9,10 +9,10 @@
     // check if the list has no card, display to notify         
     if (list.size() == 0) {
 %>
-<div class="col">
+<div class="container col-8">
     <div class="card">
         <div class="card-body">
-            <p class="text-primary">There are no product yet</p>
+            <p class="text-primary h5">You are not added any product</p>
         </div>
     </div>
 </div>
@@ -32,16 +32,19 @@
                         <image src="<%= product.getProductImgLink()%>" class="img-fluid" ></image>
                     </div>
                     <div class="col-7">
-<!--                        <p class="text-primary">
-                            Volumn: <span> <%=product.getVolumn() %> </span>
-                        </p>-->
+                        <p class="text-primary">
+                            Remaining: <span> <%=product.getRemainVolumn()%> </span>
+                        </p>
                         <p class="text-primary bottom-0">
-                            Total price: <span> <%= product.getPrice() %> VND </span>
+                            Total price: <span> <%= product.getPrice()%> VND </span>
                         </p>
                     </div>
                 </div>
-                <form action="Cart" method="GET" class="row col-4 col-lg-6  gap-2 pr-2 h-50 justify-content-end"  >
-                    <input class="col-6 col-lg-3 col-xl-2" type="number" name="volumn" value="<%= product.getVolumn() %>" min="0" id="productVolumn" step="1">
+                <form action="Cart" method="POST" class="row col-4 col-lg-6  gap-2 pr-2 h-50 justify-content-end"  >
+                        <p class="text-primary col-3">
+                            Your choice:
+                        </p>
+                    <input class="col-6 col-lg-3 col-xl-2" type="number" name="volumn" value="<%= product.getVolumn()%>" min="0" id="productVolumn" step="1">
                     <input class="d-none" type="String" name="productId" value="<%= product.getProductId()%>" id="productId">
                     <input class="d-none" type="String" name="method" value="PUT" id="method">
                     <input class="btn btn-primary col-6 col-md-5 col-lg-3 col-xl-2" id="liveToastBtn" type="submit" value="Update">

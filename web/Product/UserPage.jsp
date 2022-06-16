@@ -9,7 +9,7 @@
     <%
         String message = (String) session.getAttribute("message");
         if (message != null) {
-            if (message.compareTo("success") == 0) {
+            if (message.contains("Success".subSequence(0, 7))) {
 
     %>
     <jsp:include page="../Component/SuccessAdded.jsp"></jsp:include>

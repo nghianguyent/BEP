@@ -61,7 +61,7 @@ public class Cart {
         stm.setString(2, productId);
         ResultSet rs = stm.executeQuery();
         while (rs.next()) {
-            cart = new  DTO.Cart();
+            cart = new DTO.Cart();
             cart.setUserId(rs.getString("user_id"));
             cart.setProductId(rs.getString("product_id"));
             cart.setPrice(rs.getDouble("price"));
@@ -86,4 +86,11 @@ public class Cart {
         }
         return result;
     }
+
+    public static boolean deleteAllCarts(String userId) throws Exception {
+        String sql = Queries.deleteAllCarts;
+        DBExecuter.executeDb("update", sql, userId);
+        return true;
+    }
+
 }

@@ -42,6 +42,7 @@ public class CardProduct {
             cart.setBillCode(rs.getString("bill_code"));
             cart.setProductName(rs.getNString("name"));
             cart.setProductImgLink(rs.getString("img_link"));
+            cart.setRemainVolumn(rs.getInt("remaining"));
             result.add(cart);
         }
         return result;
